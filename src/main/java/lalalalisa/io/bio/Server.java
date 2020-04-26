@@ -26,7 +26,7 @@ public class Server {
             int len = s.getInputStream().read(bytes);
             System.out.println(new String(bytes, 0, len));
 
-            s.getOutputStream().write("HelloClient".getBytes(), 0, len);
+            s.getOutputStream().write("HelloClient,I am Server".getBytes(), 0, len);
             s.getOutputStream().flush();
         } catch (IOException e) {
             e.printStackTrace();

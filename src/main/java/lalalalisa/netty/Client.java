@@ -19,14 +19,7 @@ public class Client {
         Bootstrap b = new Bootstrap();
         b.group(workers)
                 .channel(NioSocketChannel.class)
-                .handler(new ChannelInitializer<SocketChannel>() {
-
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        System.out.println("channel initialized!");
-                        ch.pipeline().addLast(new ClientHandler());
-                    }
-                });
+                .handler(new SocketChannelChannelInitializer());
 
         try {
             System.out.println("start to connect...");
@@ -44,6 +37,14 @@ public class Client {
     }
 
 
+    private static class SocketChannelChannelInitializer extends ChannelInitializer<SocketChannel> {
+
+        @Override
+        protected void initChannel(SocketChannel ch) throws Exception {
+            System.out.println("channel initialized!");
+            ch.pipeline().addLast(new ClientHandler());
+        }
+    }
 }
 
 class ClientHandler extends ChannelInboundHandlerAdapter {

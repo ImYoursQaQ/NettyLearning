@@ -18,7 +18,7 @@ public class HelloNetty {
 class NettyServer {
 
 
-    int port = 8888;
+    int port;
 
     public NettyServer(int port) {
         this.port = port;
@@ -31,12 +31,7 @@ class NettyServer {
 
         b.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new Handler());
-                    }
-                });
+                .childHandler(new SocketChannelChannelInitializer());
 
         try {
             ChannelFuture f = b.bind(port).sync();
@@ -50,6 +45,13 @@ class NettyServer {
         }
 
 
+    }
+
+    private static class SocketChannelChannelInitializer extends ChannelInitializer<SocketChannel> {
+        @Override
+        protected void initChannel(SocketChannel ch) throws Exception {
+            ch.pipeline().addLast(new Handler());
+        }
     }
 }
 
